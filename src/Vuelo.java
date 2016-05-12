@@ -7,7 +7,7 @@ public class Vuelo {
     String nombre;
     int capacidad;
     int acientosDisponibles;
-    List<Aciento>  acientos;
+    List<Asiento> asientos;
 
     String de;
     String hacia;
@@ -18,9 +18,24 @@ public class Vuelo {
 
     }
 
-    public void addAciento(Aciento aciento){
-        if(acientos.size()<capacidad)
-            acientos.add(aciento);
+    public Vuelo(String nombre, int capacidad, String de, String hacia) {
+        this.nombre = nombre;
+        this.capacidad = capacidad;
+        this.de = de;
+        this.hacia = hacia;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void addAciento(Asiento asiento){
+        if(asientos.size()<capacidad)
+            asientos.add(asiento);
+    }
+
+    public int getCapacidad() {
+        return capacidad;
     }
 
     public String getDe() {
@@ -41,7 +56,7 @@ public class Vuelo {
 
     public int acientosDisponibles(){
         int c=0;
-        for(Aciento a:acientos){
+        for(Asiento a: asientos){
             if(!a.isReservado()){
                 c++;
             }
@@ -49,8 +64,8 @@ public class Vuelo {
         return c;
     }
 
-    public void setAcientos(List<Aciento> acientos) {
-        this.acientos = acientos;
+    public void setAsientos(List<Asiento> asientos) {
+        this.asientos = asientos;
     }
 
 

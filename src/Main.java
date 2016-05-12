@@ -1,22 +1,25 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.stream.IntStream;
 
 public class Main {
 
     public static void main(String[] args) {
 
-	    Pasajero karim=new Pasajero(1,"Karim");
-        Pasajero juan=new Pasajero(2,"Juan");
-        Pasajero angel=new Pasajero(3,"Angel");
-        Pasajero viri=new Pasajero(4,"Viri");
-        Pasajero hector=new Pasajero(5,"Hector");
+	    Pasajero p1=new Pasajero(1,"Karim");
+        Pasajero p2=new Pasajero(2,"Juan");
+        Pasajero p3=new Pasajero(3,"Angel");
+        Pasajero p4=new Pasajero(4,"Viri");
+        Pasajero p5=new Pasajero(5,"Hector");
 
         List<Pasajero> pasajeros=new ArrayList<>();
-        pasajeros.add(karim);
-        pasajeros.add(juan);
-        pasajeros.add(angel);
-        pasajeros.add(viri);
-        pasajeros.add(hector);
+        pasajeros.add(p1);
+        pasajeros.add(p2);
+        pasajeros.add(p3);
+        pasajeros.add(p4);
+        pasajeros.add(p5);
 
 
         Linea aereo=new Linea("Nueva Aorolinea laLinea");
@@ -50,10 +53,33 @@ public class Main {
         terminales.add(t5);
         terminales.add(t6);
 
+        PasajeroDAO pdao=new PasajeroDAO();
+        pdao.crear(p1);
+        pdao.crear(p2);
+        pdao.crear(p3);
+        pdao.crear(p4);
+        pdao.crear(p5);
+        TerminalDAO tdao=new TerminalDAO();
+        tdao.crear(t1);
+        tdao.crear(t2);
+        tdao.crear(t3);
+        tdao.crear(t4);
+        tdao.crear(t5);
+        tdao.crear(t6);
+        VueloDAO vdao=new VueloDAO();
+        vdao.crear(azul);
+        vdao.crear(rojo);
+        vdao.crear(negro);
+
+
+
         Simulacion simulacion=new Simulacion(100,pasajeros,vuelos,terminales);
 
-        simulacion.hacer();
 
+        //simulacion.executor.submit(simulacion.vender);
+
+       // IntStream.range(0, 1)
+       //         .forEach(i -> simulacion.executor.submit(simulacion.vender));
 
 
     }

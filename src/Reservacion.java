@@ -4,13 +4,13 @@
 public class Reservacion {
     String terminal;
     String pasajero;
-    int numeroAciento;
-    Vuelo vuelo;
+    int asiento;
+    String vuelo;
 
-    public Reservacion(String terminal, String pasajero, int numeroAciento, Vuelo vuelo) {
+    public Reservacion(String terminal, String pasajero, int asiento, String vuelo) {
         this.terminal = terminal;
         this.pasajero = pasajero;
-        this.numeroAciento = numeroAciento;
+        this.asiento = asiento;
         this.vuelo = vuelo;
     }
 
@@ -19,7 +19,7 @@ public class Reservacion {
         return "Reservacion{" +
                 "terminal='" + terminal + '\'' +
                 ", pasajero='" + pasajero + '\'' +
-                ", numeroAciento=" + numeroAciento +
+                ", asiento=" + asiento +
                 ", vuelo=" + vuelo +
                 '}';
     }

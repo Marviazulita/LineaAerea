@@ -1,90 +1,140 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
+
+import static java.lang.Thread.sleep;
 
 /**
  * Created by karim on 10/05/2016.
  */
-public class Simulacion {
-
+public class Simulacion implements Runnable {
     private static final int MAX_AVAILABLE = 10;
-    private final Semaphore disponible = new Semaphore(MAX_AVAILABLE, true);
+    List<Pasajero> lp=new ArrayList<>();
+    List<Vuelo> lv=new ArrayList<>();
+    List<Terminal> lt=new ArrayList<>();
 
-    List<Pasajero> pasajeros=new ArrayList<>();
-    List<Vuelo> vuelos=new ArrayList<>();
-    List<Terminal> terminales=new ArrayList<>();
+
+    private final Semaphore semaphore = new Semaphore(MAX_AVAILABLE, true);
+
     Random  rnd = new Random();
 
+    ReservacionDAO rdao=new ReservacionDAO();
+    PasajeroDAO pdao=new PasajeroDAO();
+    VueloDAO vdao=new VueloDAO();
+    TerminalDAO tdao=new TerminalDAO();
+
+    Terminal t=null;
+    Vuelo va=null;
+    Pasajero pa=null;
 
     int rango=30;
     int inicial=0;
-    int simulaciones;
+    int simulaciones=0;
+    int asiento;
 
-    public void hacer(){
+    int nhilos=5;
+    Thread hilos[];
 
+    public void hacerAleatorio(){
         for (int i = 0; i < simulaciones; i++) {
+            t=terminalAlearotio();
+            va=vueloAlearotio();
+            pa=pasajeroAlearotio();
+            asiento=asientoAlearotio(va);
 
-            Reservacion res=new Reservacion(terminales.get(TerminalAlearotio()).getNombre(),pasajeros.get(PasajeroAlearotio()).getNombre(),acientoAlearotio(),vuelos.get(VueloAlearotio()) );
-            while(!Reservaciones.addReservacion(res)){
-                imprimeError(res.terminal,res.pasajero,res.vuelo.nombre,res.vuelo.getDe(),res.vuelo.getHacia());
+            if(t.vender(pa,va,asiento)){
+                imprimirVendido(t,pa,va,asiento);
+            }else{
+
             }
-
 
         }
 
-    }
-
-    private void imprimeError(String terminal, String pasajero, String nombre, String de, String hacia) {
-        System.out.println("¡ACIENTO OCUPADO!");
-        System.out.println(terminal+"pasajero: "+pasajero+"Avion: "+nombre+"Ruta:"+de+"-"+hacia);
 
     }
 
+    public void hacerPorterminal(){
 
-    public Simulacion(int simulaciones) {
+    }
+
+    public Simulacion(int simulaciones,int nhilos,List<Pasajero> lp, List<Vuelo> lv, List<Terminal> lt) {
+        this.lp = lp;
+        this.lv = lv;
+        this.lt = lt;
         this.simulaciones = simulaciones;
-        hacer();
+        hilos=new Thread[nhilos];
+        crearHilos();
+        hacerAleatorio();
     }
 
-    private int acientoAlearotio(){
-        return  (int) (rnd.nextDouble() * rango + inicial);
-    }
-
-    private int PasajeroAlearotio(){
-        return  (int) (rnd.nextDouble() * pasajeros.size() + 0);
-    }
-
-    private int VueloAlearotio(){
-        return  (int) (rnd.nextDouble() *  vuelos.size()+ 0);
-    }
-
-    private int TerminalAlearotio(){
-        return  (int) (rnd.nextDouble() *  terminales.size()+ 0);
-    }
-
-    public void setPasajeros(List<Pasajero> pasajeros) {
-        this.pasajeros = pasajeros;
-    }
-
-    public Simulacion( int simulaciones,List<Pasajero> pasajeros, List<Vuelo> vuelos, List<Terminal> terminales) {
-        this.pasajeros = pasajeros;
-        this.vuelos = vuelos;
-        this.terminales = terminales;
+    public Simulacion(int simulaciones,int nhilos, Terminal t) {
         this.simulaciones = simulaciones;
+        this.t=t;
+        hilos=new Thread[nhilos];
+        crearHilos();
+        hacerPorterminal();
     }
 
-    public void setVuelos(List<Vuelo> vuelos) {
-        this.vuelos = vuelos;
+    private int asientoAlearotio(Vuelo v){
+        return  (int) (rnd.nextDouble() * v.getCapacidad() + inicial);
     }
 
-    public void setTerminales(List<Terminal> terminales) {
-        this.terminales = terminales;
+    private Pasajero pasajeroAlearotio(){
+        return lp.get((int) (rnd.nextDouble() * lp.size() + 0));
     }
 
-    public void imprimirVuelos(){
+    private Vuelo vueloAlearotio(){
+        return  lv.get((int) (rnd.nextDouble() *  lv.size()+ 0));
+    }
 
+    private Terminal terminalAlearotio(){
+        return  lt.get((int) (rnd.nextDouble() *  tdao.getTerminalesNum()+ 0));
     }
 
 
+
+    public void imprimirVendido(Terminal t, Pasajero p,Vuelo v,int asiento){
+        System.out.println("Vuelo Vendido!");
+        System.out.println(t.getNombre()+"  pasajero: "+p.getNombre()+":  Avion: "+v.getNombre()+"   Ruta:"+v.getDe()+"-"+v.getHacia()
+            +" "+ asiento
+        );
+    }
+
+    public void imprimirNoVendido(Terminal t, Pasajero p,Vuelo v,int asi){
+        System.out.println("\nError !");
+        System.out.println("Asiento"+asi+"Ocupado");
+        System.out.println(t.getNombre()+"  pasajero: "+p.getNombre()+":  Avion: "+v.getNombre()+"   Ruta:"+v.getDe()+"-"+v.getHacia());
+    }
+
+    public void addPasajero(Pasajero p){
+     this.lp.add(p);
+    }
+    public void addTerminal(Terminal t){
+        this.lt.add(t);
+    }
+    public void addVuelo(Vuelo v){
+        this.lv.add(v);
+    }
+
+    @Override
+    public void run() {
+        try{
+
+        }catch (InterruptedException e){
+            System.out.println("Hilo interrumpido");
+        }
+
+
+    }
+    private void crearHilos(){
+        for (int i = 0; i < nhilos; i++) {
+            //new Thread(p).start();
+            hilos[i]=new Thread(this);
+        }
+    }
 }

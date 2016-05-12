@@ -1,11 +1,11 @@
 /**
  * Created by karim on 10/05/2016.
  */
-public class Aciento {
+public class Asiento {
     int numero;
     boolean reservado;
 
-    public Aciento(int numero) {
+    public Asiento(int numero) {
         this.numero = numero;
         this.reservado=false;
     }
