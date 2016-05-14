@@ -59,6 +59,7 @@ public class Main {
         pdao.crear(p3);
         pdao.crear(p4);
         pdao.crear(p5);
+
         TerminalDAO tdao=new TerminalDAO();
         tdao.crear(t1);
         tdao.crear(t2);
@@ -66,14 +67,19 @@ public class Main {
         tdao.crear(t4);
         tdao.crear(t5);
         tdao.crear(t6);
+
         VueloDAO vdao=new VueloDAO();
         vdao.crear(azul);
         vdao.crear(rojo);
         vdao.crear(negro);
 
+        ReservacionDAO rado=new ReservacionDAO();
+        t1.setRdao(rado);
+        t2.setRdao(rado);
+        Hilos h1=new Hilos(2,10,pasajeros,vuelos,t1);
+        Hilos h2=new Hilos(10,10,pasajeros,vuelos,t2);
 
 
-        Simulacion simulacion=new Simulacion(100,pasajeros,vuelos,terminales);
 
 
         //simulacion.executor.submit(simulacion.vender);

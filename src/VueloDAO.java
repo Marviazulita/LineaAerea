@@ -23,8 +23,11 @@ public class VueloDAO {
 
         try {
             Connection conn = Conexion.getConexion();
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO vuelo VALUES( ? )");
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO vuelo VALUES( ?,?,?,?)");
             ps.setString(1, nombre);
+            ps.setInt(2, capacidad);
+            ps.setString(3, desde);
+            ps.setString(4, hacia);
             ps.executeUpdate();
             return new Vuelo(nombre,capacidad, desde, hacia);
         } catch (SQLException e) {

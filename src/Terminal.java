@@ -1,10 +1,14 @@
 /**
  * Created by karim on 10/05/2016.
  */
-public class Terminal implements Runnable  {
+public class Terminal    {
     int idTerminal;
     String nombre;
-    ReservacionDAO rdao=new ReservacionDAO();
+    ReservacionDAO rdao;
+
+    public void setRdao(ReservacionDAO rdao) {
+        this.rdao = rdao;
+    }
 
     public Terminal(int idTerminal) {
         this.idTerminal = idTerminal;
@@ -36,16 +40,24 @@ public class Terminal implements Runnable  {
         this.nombre = nombre;
     }
 
-    @Override
-    public void run() {
-
-    }
 
     public boolean vender(Pasajero p, Vuelo v, int asiento){
         Reservacion r=new Reservacion(this.getNombre(),p.getNombre(),asiento,v.getNombre());
+        Reservacion r2=null;
+        Reservacion r3=rdao.estaOcupado(r.vuelo,r.asiento);
+        if(r3==null){
+            r2=rdao.crear(r);
 
-        if(rdao.crear(r)!=null)
+        }else{
+            System.out.println("Ocupado por:"+r3.pasajero);
+        }
+
+
+
+        if(r2!=null) {
             return true;
+
+            }
         return false;
 
     }

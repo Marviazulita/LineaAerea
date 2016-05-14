@@ -4,9 +4,11 @@
 public class Threades implements Runnable{
     String strTName;
     Thread objThread;
-    Threades(String strThreadNm){
+    int hilos;
+    Threades(String strThreadNm,int h){
         strTName = strThreadNm;
-        objThread = new Thread(this , this.strTName);
+        this.hilos=h;
+        objThread = new Thread(this,strTName);
         System.out.println("New thread is : " + objThread);
         objThread.start();
     }//end of constructor

@@ -1,7 +1,4 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * Created by karim on 11/05/2016.
@@ -11,7 +8,7 @@ public class ReservacionDAO {
     public ReservacionDAO() {
         try {
             Connection conn = Conexion.getConexion();
-            PreparedStatement ps = conn.prepareStatement("DELETE  resevacion ");
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM reservaciones ");
             ps.executeUpdate();
 
         } catch (SQLException e) {
@@ -22,9 +19,7 @@ public class ReservacionDAO {
     public Reservacion crear(int id, String terminal, String pasajero, int asiento , String vuelo) {
         try {
             Connection conn = Conexion.getConexion();
-
             PreparedStatement ps = conn.prepareStatement("INSERT INTO reservaciones VALUES( NULL ,?,?,?,? )");
-
             ps.setString(1,terminal);
             ps.setString(2, pasajero);
             ps.setString(3, vuelo);
@@ -32,9 +27,9 @@ public class ReservacionDAO {
             ps.executeUpdate();
             return new Reservacion(terminal,pasajero,asiento,vuelo);
         } catch (SQLException e) {
-
+            System.out.println(e.toString());
         }
-        return null;
+        return new Reservacion(terminal,pasajero,asiento,vuelo);
     }
     public Reservacion crear(Reservacion r) {
         try {
@@ -45,11 +40,12 @@ public class ReservacionDAO {
             ps.setString(1,r.pasajero);
             ps.setString(2, r.vuelo);
             ps.setInt(3, r.asiento);
+            ps.setString(4, r.terminal);
 
             ps.executeUpdate();
             return r;
         } catch (SQLException e) {
-
+            System.out.println(e.toString());
         }
         return null;
     }
@@ -79,7 +75,7 @@ public class ReservacionDAO {
         try {
             Connection conn = Conexion.getConexion();
             String query;
-            query="SELECT * FROM resevaciones WHERE id= ? ";
+            query="SELECT * FROM reservaciones WHERE id= ? ";
             PreparedStatement ps = conn.prepareStatement(query);
 
             ps.setInt(1 ,id);
@@ -97,18 +93,21 @@ public class ReservacionDAO {
     public Reservacion estaOcupado(String vuelo,int asiento){
         try {
             Connection conn = Conexion.getConexion();
+            Statement sta=conn.createStatement();
             String query;
-            query="SELECT * FROM resevaciones WHERE vuelo= ? AND asiento=?";
+            query="SELECT *  FROM reservaciones WHERE vuelo=? AND asiento=?";
             PreparedStatement ps = conn.prepareStatement(query);
 
             ps.setString(1,vuelo);
             ps.setInt(2 ,asiento);
 
-            ResultSet rs = ps.executeQuery(query);
+
+            ResultSet rs = ps.executeQuery();
+            rs.next();
             return new Reservacion(rs.getString("terminal"),rs.getString("pasajero"),rs.getInt("asiento"),rs.getString("vuelo"));
 
         } catch (SQLException e) {
-
+           // System.out.println(e);
         }
         return null;
     }
