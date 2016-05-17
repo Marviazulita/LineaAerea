@@ -51,27 +51,18 @@ public class Simulacion   {
                 imprimirNoVendido(t,pa,va,asiento);
             }
 
-
-
-
-    }
-
-    public void hacerPorterminal(){
-
     }
 
     public Simulacion(List<Pasajero> lp, List<Vuelo> lv,Terminal lt) {
         this.lp = lp;
         this.lv = lv;
         this.t = lt;
-
-
     }
 
     public Simulacion(int simulaciones,int nhilos, Terminal t) {
         this.simulaciones = simulaciones;
         this.t=t;
-        hacerPorterminal();
+
     }
 
     private int asientoAlearotio(Vuelo v){
@@ -103,15 +94,6 @@ public class Simulacion   {
         System.out.println(t.getNombre()+"  pasajero: "+p.getNombre()+":  Avion: "+v.getNombre()+"   Ruta:"+v.getDe()+"-"+v.getHacia());
     }
 
-    public void addPasajero(Pasajero p){
-     this.lp.add(p);
-    }
-    public void addTerminal(Terminal t){
-        this.lt.add(t);
-    }
-    public void addVuelo(Vuelo v){
-        this.lv.add(v);
-    }
 
 
 }

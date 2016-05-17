@@ -63,10 +63,6 @@ public class PasajeroDAO {
 
     }
 
-    public void actualizar(String Numbre) {
-
-    }
-
     public Pasajero consulta(int id) {
         try {
             Connection conn = Conexion.getConexion();

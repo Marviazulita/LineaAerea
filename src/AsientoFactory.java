@@ -1,9 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by karim on 10/05/2016.
- */
 public class AsientoFactory {
 
     public static Asiento getAciento(int numero){

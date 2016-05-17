@@ -12,7 +12,12 @@ public class Vuelo {
     String de;
     String hacia;
 
+    public void setCapacidad(int capacidad) {
+        this.capacidad = capacidad;
+    }
+
     public Vuelo(String nombre) {
+
         this.nombre = nombre;
         this.capacidad=10;
 

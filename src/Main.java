@@ -8,6 +8,7 @@ public class Main {
 
     public static void main(String[] args) {
 
+        //se crean objetos pasajero
 	    Pasajero p1=new Pasajero(1,"Karim");
         Pasajero p2=new Pasajero(2,"Juan");
         Pasajero p3=new Pasajero(3,"Angel");
@@ -24,6 +25,7 @@ public class Main {
 
         Linea aereo=new Linea("Nueva Aorolinea laLinea");
 
+        //Vuelos
         Vuelo azul=new Vuelo("Azul");
         azul.setDe("Morelia");
         azul.setHacia("Tijuana");
@@ -33,6 +35,7 @@ public class Main {
         Vuelo negro=new Vuelo("Negro");
         negro.setDe("Valladolid");
         negro.setHacia("MexicoDF");
+        negro.setCapacidad(30);
 
         List<Vuelo> vuelos=new ArrayList<>();
         vuelos.add(azul);
@@ -53,6 +56,7 @@ public class Main {
         terminales.add(t5);
         terminales.add(t6);
 
+        // Guardamos los pasajeros en la base de datos
         PasajeroDAO pdao=new PasajeroDAO();
         pdao.crear(p1);
         pdao.crear(p2);
@@ -60,6 +64,7 @@ public class Main {
         pdao.crear(p4);
         pdao.crear(p5);
 
+        // Guardamos terminales en la base de datos
         TerminalDAO tdao=new TerminalDAO();
         tdao.crear(t1);
         tdao.crear(t2);
@@ -68,17 +73,23 @@ public class Main {
         tdao.crear(t5);
         tdao.crear(t6);
 
+        // Guardamos los vuelos en la base de datos
         VueloDAO vdao=new VueloDAO();
         vdao.crear(azul);
         vdao.crear(rojo);
         vdao.crear(negro);
 
+        // Creamos el objeto a usar para guardas las reservaciones en la BD
         ReservacionDAO rado=new ReservacionDAO();
         t1.setRdao(rado);
         t2.setRdao(rado);
+        t3.setRdao(rado);
+
+        // Se crean los hilos con las terminal, numero de hilos y simulaciones dentas por hilo
         Hilos h1=new Hilos(2,10,pasajeros,vuelos,t1);
         Hilos h2=new Hilos(10,10,pasajeros,vuelos,t2);
 
+        //Hilos h3=new Hilos(10,10,pasajeros,vuelos,t2);
 
 
 
